@@ -11,8 +11,11 @@
 /project-directory
 │
 ├── .env # Файл с переменными окружения
+
 ├── common.py # Функции общего назначения
+
 ├── fetch_images.py # Скрипт для загрузки изображений
+
 └── publish_images.py # Скрипт для отправки изображений в Telegram канал
 
 - **Файл .env:** Здесь хранятся ваши секретные ключи, такие как `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHANNEL_ID` и `NASA_API_KEY`.
