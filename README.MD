@@ -31,10 +31,10 @@
    IMAGE_DIRECTORY=./images  # Папка для сохранения изображений
    ```
 
-2. Установите необходимые библиотеки:
-   ```bash
-   pip install python-dotenv python-telegram-bot requests
-   ```
+2. Установите необходимые библиотеки. Для этого создайте файл requirements.txt со следующим содержимым
+   ```python-dotenv==1.0.1 requests==2.31.0 urllib3==1.26.8 python-telegram-bot==13.0```
+Затем выполните команду для установки зависимостей: pip install -r requirements.txt
+   
 
 3. Запустите скрипт для загрузки изображений:
    ```bash
