@@ -24,22 +24,15 @@ def main():
     bot = Bot(token=TELEGRAM_BOT_TOKEN)
 
     while True:
-        # Получение и загрузка изображений APOD
         apod_image_urls = fetch_apod_images(count=5)
         for index, image_url in enumerate(apod_image_urls, start=1):
             download_image(image_url, APOD_IMAGES_DIRECTORY, f"apod_image_{index}.jpg")
-
-        # Получение и загрузка изображений EPIC
         epic_image_urls = fetch_epic_images(count=5)
         for index, image_url in enumerate(epic_image_urls, start=1):
             download_image(image_url, EPIC_IMAGES_DIRECTORY, f"epic_image_{index}.png")
-
-        # Получение и загрузка изображения SpaceX
         spacex_image_url = fetch_spacex_image()
         if spacex_image_url:
             download_image(spacex_image_url, SPACEX_IMAGES_DIRECTORY, "spacex_image.jpg")
-
-        # Публикация всех изображений
         publish_images(bot, APOD_IMAGES_DIRECTORY)
         publish_images(bot, EPIC_IMAGES_DIRECTORY)
         publish_images(bot, SPACEX_IMAGES_DIRECTORY)
