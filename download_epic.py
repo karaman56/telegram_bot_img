@@ -1,4 +1,4 @@
-# download_epic.py
+
 import requests
 from datetime import datetime
 import os
