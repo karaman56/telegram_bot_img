@@ -1,44 +1,44 @@
+# main.py
 import os
 import time
 from dotenv import load_dotenv
 from telegram import Bot
-from nasa_api import fetch_apod_images, fetch_epic_images
-from spacex_api import fetch_spacex_image
-from image_utils import download_image
 from telegram_publisher import publish_images
+from download_apod import download_apod_images
+from download_epic import download_epic_images
+from download_spacex import download_spacex_image
 
 load_dotenv()
 
-NASA_API_KEY = os.getenv('NASA_API_KEY')
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 TELEGRAM_CHANNEL_ID = os.getenv('TELEGRAM_CHANNEL_ID')
-PUBLISH_INTERVAL = int(os.getenv('PUBLISH_INTERVAL', 14400))
-APOD_IMAGES_DIRECTORY = os.getenv('APOD_IMAGES_DIRECTORY', './apod_images')
-EPIC_IMAGES_DIRECTORY = os.getenv('EPIC_IMAGES_DIRECTORY', './epic_images')
+NASA_API_KEY = os.getenv('NASA_API_KEY')
+PUBLISH_INTERVAL = int(os.getenv('PUBLISH_INTERVAL'))
+APOD_IMAGES_DIRECTORY = os.getenv('APOD_IMAGES_DIRECTORY')
+EPIC_IMAGES_DIRECTORY = os.getenv('EPIC_IMAGES_DIRECTORY')
 SPACEX_IMAGES_DIRECTORY = './spacex_images'
 
-if any(v is None for v in [NASA_API_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL_ID]):
-    raise ValueError("Отсутствует один или несколько обязательных параметров в переменных окружения.")
-
-def main():
-    bot = Bot(token=TELEGRAM_BOT_TOKEN)
+def start_image_fetcher():
+    """Запускает процесс получения изображений и их публикации в Telegram."""
+    telegram_bot = Bot(token=TELEGRAM_BOT_TOKEN)
 
     while True:
-        apod_image_urls = fetch_apod_images(count=5)
-        for index, image_url in enumerate(apod_image_urls, start=1):
-            download_image(image_url, APOD_IMAGES_DIRECTORY, f"apod_image_{index}.jpg")
-        epic_image_urls = fetch_epic_images(count=5)
-        for index, image_url in enumerate(epic_image_urls, start=1):
-            download_image(image_url, EPIC_IMAGES_DIRECTORY, f"epic_image_{index}.png")
-        spacex_image_url = fetch_spacex_image()
-        if spacex_image_url:
-            download_image(spacex_image_url, SPACEX_IMAGES_DIRECTORY, "spacex_image.jpg")
-        publish_images(bot, APOD_IMAGES_DIRECTORY)
-        publish_images(bot, EPIC_IMAGES_DIRECTORY)
-        publish_images(bot, SPACEX_IMAGES_DIRECTORY)
+        print("Скачивание изображений APOD...")
+        download_apod_images()
+
+        print("Скачивание изображений EPIC...")
+        download_epic_images()
+
+        print("Скачивание изображения SpaceX...")
+        download_spacex_image()
+
+
+        publish_images(telegram_bot, './apod_images')
+        publish_images(telegram_bot, './epic_images')
+        publish_images(telegram_bot, './spacex_images')
 
         print(f"Ожидание следующего обновления через {PUBLISH_INTERVAL} секунд...")
         time.sleep(PUBLISH_INTERVAL)
 
 if __name__ == "__main__":
-    main()
+    start_image_fetcher()
