@@ -1,5 +1,4 @@
 import os
-from telegram import Bot
 
 def publish_images(telegram_bot, images_directory):
     """Публикует все изображения из указанного каталога в Telegram."""
