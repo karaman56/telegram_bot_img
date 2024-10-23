@@ -26,7 +26,7 @@ def download_apod_images(count=5):
     api_key = os.getenv('NASA_API_KEY')
     apod_image_urls = fetch_apod_image_urls(api_key, count)
     for index, image_url in enumerate(apod_image_urls, start=1):
-        save_image(image_url, APOD_IMAGES_DIRECTORY, f"apod_image_{index}.jpg")
+        save_image(image_url, apod_images_directory, f"apod_image_{index}.jpg")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Скачать изображения из APOD.')

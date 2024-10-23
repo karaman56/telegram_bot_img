@@ -1,13 +1,9 @@
-
+#epic
 import requests
-from datetime import datetime
 import os
-from dotenv import load_dotenv
 from general_functions import is_image_available, save_image
 import argparse
 
-load_dotenv()
-EPIC_IMAGES_DIRECTORY = './epic_images'
 
 def fetch_epic_image_urls(api_key, count=5):
     """Получает URL изображений Земли из EPIC."""
@@ -30,12 +26,17 @@ def fetch_epic_image_urls(api_key, count=5):
 
     return available_image_urls
 
+
 def download_epic_images(count=5):
     """Скачивает EPIC изображения и сохраняет их в каталог."""
     api_key = os.getenv('NASA_API_KEY')
     epic_image_urls = fetch_epic_image_urls(api_key, count)
+
+    epic_images_directory = os.getenv('EPIC_IMAGES_DIRECTORY', './epic_images')
+
     for index, image_url in enumerate(epic_image_urls, start=1):
-        save_image(image_url, EPIC_IMAGES_DIRECTORY, f"epic_image_{index}.png")
+        save_image(image_url, epic_images_directory, f"epic_image_{index}.png")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Скачать изображения из EPIC.')
