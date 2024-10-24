@@ -1,24 +1,26 @@
 #epic
 import requests
-from general_functions import is_image_available, save_image
+from urllib.parse import urlencode
+from general_functions import save_image
 
-def fetch_epic_image_urls(api_key, max_image_count=5):
+def fetch_earth_image_urls(api_key, max_image_count=1):
     """Получает URL изображений Земли из EPIC."""
     endpoint = "/EPIC/api/natural/images"
     params = {"api_key": api_key}
 
-    response = requests.get(f"https://api.nasa.gov{endpoint}", params=params)
+    query_string = urlencode(params)
+    response = requests.get(f"https://api.nasa.gov{endpoint}?{query_string}")
     response.raise_for_status()
-
-    epic_image_response = response.json()
+    epic_image_data = response.json()
     return [
         f"https://epic.gsfc.nasa.gov/archive/natural/{item['date'][:10].replace('-', '/')}/png/{item['image']}.png"
-        for item in epic_image_response[:max_image_count]
+        for item in epic_image_data[:max_image_count]
     ]
 
-def download_epic_images(image_urls, download_directory):
-    """Скачивает EPIC изображения и сохраняет их в указанный каталог."""
+def download_earth_images(api_key, download_directory, max_image_count=1):
+    """Скачивает изображения Земли и сохраняет их в указанный каталог."""
+    image_urls = fetch_earth_image_urls(api_key, max_image_count)
+
     for index, image_url in enumerate(image_urls, start=1):
-        if is_image_available(image_url):
-            image_filename = f"epic_image_{index}.png"
-            save_image(image_url, download_directory, image_filename)
+        image_filename = f"epic_image_{index}.png"
+        save_image(image_url, download_directory, image_filename)
