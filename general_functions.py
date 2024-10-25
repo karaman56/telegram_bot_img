@@ -8,7 +8,6 @@ def save_image(image_url, download_directory, filename):
         response = requests.get(image_url)
         response.raise_for_status()
         os.makedirs(download_directory, exist_ok=True)
-
         image_path = os.path.join(download_directory, filename)
         with open(image_path, 'wb') as file:
             file.write(response.content)

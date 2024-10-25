@@ -1,47 +1,41 @@
 #main
+import subprocess
 import os
 import time
 from dotenv import load_dotenv
-from telegram import Bot
-from telegram_publisher import publish_images_from_directory
-from download_apod import download_apod_images
-from download_epic import download_earth_images
-from download_spacex import download_spacex_image
+
 
 def load_config():
     """Загружает конфигурацию из переменных окружения."""
     load_dotenv()
     return {
-        "TELEGRAM_BOT_TOKEN": os.getenv('TELEGRAM_BOT_TOKEN'),
-        "NASA_API_KEY": os.getenv('NASA_API_KEY'),
-        "APOD_IMAGES_DIRECTORY": os.getenv('APOD_IMAGES_DIRECTORY', './apod_images'),
-        "EPIC_IMAGES_DIRECTORY": os.getenv('EPIC_IMAGES_DIRECTORY', './epic_images'),
-        "SPACEX_IMAGES_DIRECTORY": './spacex_images',
-        "PUBLISH_INTERVAL": int(os.getenv('PUBLISH_INTERVAL', 14400))  # По умолчанию 4 часа
+        "DOWNLOAD_INTERVAL": int(os.getenv('DOWNLOAD_INTERVAL', 14400)),  # По умолчанию 4 часа
     }
 
+
+def run_download_script():
+    """Запускает скрипт для скачивания изображений."""
+    subprocess.Popen(['python', 'download_apod.py'])
+    subprocess.Popen(['python', 'download_epic.py'])
+    subprocess.Popen(['python', 'download_spacex.py'])
+
+
+def run_publish_script():
+    """Запускает скрипт для публикации изображений."""
+    subprocess.Popen(['python', 'publish_images.py'])
+
+
 def main():
+    run_download_script()
+    run_publish_script()
+
+    # Ожидаем, пока процессы будут выполняться
     config = load_config()
-    telegram_bot = Bot(token=config['TELEGRAM_BOT_TOKEN'])
+    print(f"Скрипт работает. Ожидание следующего обновления через {config['DOWNLOAD_INTERVAL']} секунд...")
 
     while True:
-        # Скачивание изображений APOD
-        print("Скачивание изображений APOD...")
-        download_apod_images(config['NASA_API_KEY'], config['APOD_IMAGES_DIRECTORY'], image_count=1)
-        publish_images_from_directory(telegram_bot, config['APOD_IMAGES_DIRECTORY'])
+        time.sleep(config['DOWNLOAD_INTERVAL'])  # Подождать указанный интервал
 
-        # Скачивание изображений EPIC
-        print("\nСкачивание изображений EPIC...")
-        download_earth_images(config['NASA_API_KEY'], config['EPIC_IMAGES_DIRECTORY'], max_image_count=1)
-        publish_images_from_directory(telegram_bot, config['EPIC_IMAGES_DIRECTORY'])
-
-        # Скачивание и публикация изображения SpaceX
-        print("\nСкачивание изображения SpaceX...")
-        download_spacex_image(download_directory=config['SPACEX_IMAGES_DIRECTORY'])
-        publish_images_from_directory(telegram_bot, config['SPACEX_IMAGES_DIRECTORY'])
-
-        print(f"\nОжидание следующего обновления через {config['PUBLISH_INTERVAL']} секунд...")
-        time.sleep(config['PUBLISH_INTERVAL'])
 
 if __name__ == "__main__":
     main()

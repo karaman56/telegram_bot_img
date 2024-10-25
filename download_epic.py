@@ -7,7 +7,6 @@ def fetch_earth_image_urls(api_key, max_image_count=1):
     """Получает URL изображений Земли из EPIC."""
     endpoint = "/EPIC/api/natural/images"
     params = {"api_key": api_key}
-
     query_string = urlencode(params)
     response = requests.get(f"https://api.nasa.gov{endpoint}?{query_string}")
     response.raise_for_status()
@@ -20,7 +19,6 @@ def fetch_earth_image_urls(api_key, max_image_count=1):
 def download_earth_images(api_key, download_directory, max_image_count=1):
     """Скачивает изображения Земли и сохраняет их в указанный каталог."""
     image_urls = fetch_earth_image_urls(api_key, max_image_count)
-
     for index, image_url in enumerate(image_urls, start=1):
         image_filename = f"epic_image_{index}.png"
         save_image(image_url, download_directory, image_filename)
