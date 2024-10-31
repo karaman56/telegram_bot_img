@@ -55,12 +55,16 @@ TELEGRAM_CHAT_ID=ваш_chat_id
 def build_apod_url(api_key): params = {'api_key': api_key}
 return 'https://api.nasa.gov/planetary/apod?' + urlencode(params)
 ```
-<br>
-### 2. `epic.py` <br><br> Этот файл содержит функции для работы с API NASA EPIC. Он включает в себя:<br><br>- **Построение URL для EPIC**: Функция `build_epic_url(api_key)` создает URL для запроса к API.<br>- 
-**Получение информации об изображениях EPIC**: Функция `fetch_epic_image_info(url)` делает запрос к API и возвращает информацию об изображениях.<br>- 
-**Скачивание изображений EPIC**: Функция `download_epic_images(count, api_key)` скачивает заданное количество изображений.<br><br>```python<br>
+
+
+### 2. `epic.py`
+Этот файл содержит функции для работы с API NASA EPIC. Он включает в себя:
+<br>- Построение URL для EPIC**: Функция `build_epic_url(api_key)` создает URL для запроса к API. 
+<br>- Получение информации об изображениях EPIC**: Функция `fetch_epic_image_info(url)` делает запрос к API и возвращает информацию об изображениях.<br>- 
+<br>- Скачивание изображений EPIC**: Функция `download_epic_images(count, api_key)` скачивает заданное количество изображений.
 
 # Пример функции для получения информации об изображениях EPIC
+```python
 def fetch_epic_image_info(url):
     try:
         response = requests.get(url)
@@ -69,13 +73,14 @@ def fetch_epic_image_info(url):
     except requests.exceptions.RequestException as error:
         print(f"Ошибка при запросе к EPIC API: {error}")
         return []
+```
         
 ### 3. spacex.py
 
 Этот файл содержит функции для работы с API SpaceX. Он включает в себя:
 
-- Получение информации о последнем запуске SpaceX: Функция fetch_spacex_latest_launch_info() делает запрос к API и возвращает информацию о последнем запуске.
-- Скачивание изображения SpaceX: Функция download_spacex_image() скачивает изображение последнего запуска.
+- Получение информации о последнем запуске SpaceX: Функция `fetch_spacex_latest_launch_info()` делает запрос к API и возвращает информацию о последнем запуске.
+- Скачивание изображения SpaceX: Функция `download_spacex_image()` скачивает изображение последнего запуска.
 
 # Пример функции для получения информации о последнем запуске SpaceX
 ```python
