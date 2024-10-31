@@ -110,18 +110,26 @@ def publish_images_to_telegram(directory, bot_token, chat_id):
 
 Это основной файл, который запускает весь процесс. Он использует функции из других файлов для скачивания изображений и их публикации в Telegram.
 
+#### Пример основного цикла в main.py  
 ```python
-# Пример основного цикла в main.py while True: try: download_apod_images(count=args.count, api_key=API_KEY) download_epic_images(count=args.count, api_key=API_KEY) download_spacex_image()
-
+    while True: try: 
+    download_apod_images(count=args.count, api_key=API_KEY) 
+    download_epic_images(count=args.count, api_key=API_KEY) 
+    download_spacex_image()`
     publish_images_to_telegram(APOD_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
     publish_images_to_telegram(EPIC_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
     publish_images_to_telegram(SPACEX_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
-
     print('Изображения успешно опубликованы. Ждем перед следующей итерацией.')
 except Exception as error:
     print(f"Ошибка в основном цикле: {error}")
-<br>## Запуск проекта<br><br>Чтобы запустить проект, выполните следующую команду в терминале:<br><br>```bash<br>python main.py --count 3 --interval 14400
 ```
+
+### Запуск проекта
+<br>Чтобы запустить проект, выполните следующую команду в терминале:<br><br>
+```
+bash<br>python main.py --count 3 --interval 14400
+```
+
 
 Здесь `--count` указывает количество изображений для загрузки, а `--interval` — интервал публикации в секундах.
 
