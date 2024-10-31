@@ -1,41 +1,39 @@
-#main
-import subprocess
 import os
-import time
+import argparse
 from dotenv import load_dotenv
-
-
-def load_config():
-    """Загружает конфигурацию из переменных окружения."""
-    load_dotenv()
-    return {
-        "DOWNLOAD_INTERVAL": int(os.getenv('DOWNLOAD_INTERVAL', 14400)),  # По умолчанию 4 часа
-    }
-
-
-def run_download_script():
-    """Запускает скрипт для скачивания изображений."""
-    subprocess.Popen(['python', 'download_apod.py'])
-    subprocess.Popen(['python', 'download_epic.py'])
-    subprocess.Popen(['python', 'download_spacex.py'])
-
-
-def run_publish_script():
-    """Запускает скрипт для публикации изображений."""
-    subprocess.Popen(['python', 'publish_images.py'])
-
-
-def main():
-    run_download_script()
-    run_publish_script()
-
-    # Ожидаем, пока процессы будут выполняться
-    config = load_config()
-    print(f"Скрипт работает. Ожидание следующего обновления через {config['DOWNLOAD_INTERVAL']} секунд...")
-
-    while True:
-        time.sleep(config['DOWNLOAD_INTERVAL'])  # Подождать указанный интервал
-
+import time
+from apod import download_apod_images
+from epic import download_epic_images
+from spacex import download_spacex_image
+from telegram import publish_images_to_telegram
 
 if __name__ == "__main__":
-    main()
+    load_dotenv()
+
+    parser = argparse.ArgumentParser(description='Скачивание и публикация изображений из NASA и SpaceX.')
+    parser.add_argument('--count', type=int, default=3, help='Количество изображений для загрузки (по умолчанию 3).')
+    parser.add_argument('--interval', type=int, default=14400, help='Интервал публикации в секундах (по умолчанию 14400).')
+
+    args = parser.parse_args()
+
+    API_KEY = os.getenv('NASA_API_KEY')
+    BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+    CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
+
+    while True:
+        try:
+            download_apod_images(count=args.count, api_key=API_KEY)
+            download_epic_images(count=args.count, api_key=API_KEY)
+            download_spacex_image()
+
+            publish_images_to_telegram(APOD_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
+            publish_images_to_telegram(EPIC_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
+            publish_images_to_telegram(SPACEX_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
+
+            print('Изображения успешно опубликованы. Ждем перед следующей итерацией.')
+        except Exception as error:
+            print(f"Ошибка в основном цикле: {error}")
+
+        time.sleep(args.interval)  # Ждем перед следующей итерацией
+        print('Ждем перед следующей итерацией')
+
