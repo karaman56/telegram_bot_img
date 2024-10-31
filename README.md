@@ -50,9 +50,9 @@ TELEGRAM_CHAT_ID=ваш_chat_id
 - **Сохранение изображения**: Функция `save_image(image_url, directory, prefix)` загружает изображение и сохраняет его в указанной директории.
 - **Скачивание изображений APOD**: Функция `download_apod_images(count, api_key)` скачивает заданное количество изображений.
 
-
 Пример функции для построения URL для APOD
-```def build_apod_url(api_key): params = {'api_key': api_key}
+```
+def build_apod_url(api_key): params = {'api_key': api_key}
 return 'https://api.nasa.gov/planetary/apod?' + urlencode(params)
 ```
 <br>### 2. `epic.py`<br><br>Этот файл содержит функции для работы с API NASA EPIC. Он включает в себя:<br><br>- **Построение URL для EPIC**: Функция `build_epic_url(api_key)` создает URL для запроса к API.<br>- **Получение информации об изображениях EPIC**: Функция `fetch_epic_image_info(url)` делает запрос к API и возвращает информацию об изображениях.<br>- **Скачивание изображений EPIC**: Функция `download_epic_images(count, api_key)` скачивает заданное количество изображений.<br><br>```python<br># Пример функции для получения информации об изображениях EPIC
