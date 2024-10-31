@@ -62,7 +62,7 @@ return 'https://api.nasa.gov/planetary/apod?' + urlencode(params)
 <br>- Получение информации об изображениях EPIC: Функция `fetch_epic_image_info(url)` делает запрос к API и возвращает информацию об изображениях. 
 <br>- Скачивание изображений EPIC: Функция `download_epic_images(count, api_key)` скачивает заданное количество изображений.
 
-# Пример функции для получения информации об изображениях EPIC
+#### Пример функции для получения информации об изображениях EPIC
 ```python
 def fetch_epic_image_info(url):
     try:
@@ -81,7 +81,7 @@ def fetch_epic_image_info(url):
 - Получение информации о последнем запуске SpaceX: Функция `fetch_spacex_latest_launch_info()` делает запрос к API и возвращает информацию о последнем запуске.
 - Скачивание изображения SpaceX: Функция `download_spacex_image()` скачивает изображение последнего запуска.
 
-# Пример функции для получения информации о последнем запуске SpaceX
+#### Пример функции для получения информации о последнем запуске SpaceX
 ```python
  def fetch_spacex_latest_launch_info(): try:
 
@@ -97,7 +97,7 @@ except requests.exceptions.RequestException as error:
 Этот файл содержит функции для публикации изображений в Telegram. Он включает в себя:
 <br>Публикация изображений в Telegram**: Функция `publish_images_to_telegram(directory, bot_token, chat_id)` отправляет изображения из указанной директории в Telegram.
 
-# Пример функции для публикации изображений в Telegram
+#### Пример функции для публикации изображений в Telegram
 ```python
 def publish_images_to_telegram(directory, bot_token, chat_id):
     bot = Bot(token=bot_token)
