@@ -113,21 +113,21 @@ def publish_images_to_telegram(directory, bot_token, chat_id):
 #### Пример основного цикла в main.py  
 ```python
     while True: try: 
-    download_apod_images(count=args.count, api_key=API_KEY) 
-    download_epic_images(count=args.count, api_key=API_KEY) 
-    download_spacex_image()`
-    publish_images_to_telegram(APOD_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
-    publish_images_to_telegram(EPIC_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
-    publish_images_to_telegram(SPACEX_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
-    print('Изображения успешно опубликованы. Ждем перед следующей итерацией.')
-except Exception as error:
-    print(f"Ошибка в основном цикле: {error}")
+        download_apod_images(count=args.count, api_key=API_KEY) 
+        download_epic_images(count=args.count, api_key=API_KEY) 
+        download_spacex_image()`
+        publish_images_to_telegram(APOD_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
+        publish_images_to_telegram(EPIC_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
+        publish_images_to_telegram(SPACEX_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
+        print('Изображения успешно опубликованы. Ждем перед следующей итерацией.')
+    except Exception as error:
+        print(f"Ошибка в основном цикле: {error}")
 ```
 
 ### Запуск проекта
 <br>Чтобы запустить проект, выполните следующую команду в терминале:<br><br>
-```
-bash<br>python main.py --count 3 --interval 14400
+```python
+python main.py --count 3 --interval 14400
 ```
 
 
