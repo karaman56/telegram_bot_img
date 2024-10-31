@@ -11,8 +11,7 @@
 1. Клонируйте репозиторий проекта:
 
 ```bash
-git clone https://github.com/yourusername/yourproject.git
-cd yourproject
+git clone https://github.com/karaman56/telegram_bot_img
 ```
 
 2. Установите необходимые библиотеки:
@@ -59,9 +58,9 @@ return 'https://api.nasa.gov/planetary/apod?' + urlencode(params)
 
 ### 2. `epic.py`
 Этот файл содержит функции для работы с API NASA EPIC. Он включает в себя:
-<br>- Построение URL для EPIC**: Функция `build_epic_url(api_key)` создает URL для запроса к API. 
-<br>- Получение информации об изображениях EPIC**: Функция `fetch_epic_image_info(url)` делает запрос к API и возвращает информацию об изображениях.<br>- 
-<br>- Скачивание изображений EPIC**: Функция `download_epic_images(count, api_key)` скачивает заданное количество изображений.
+<br>- Построение URL для EPIC: Функция `build_epic_url(api_key)` создает URL для запроса к API. 
+<br>- Получение информации об изображениях EPIC: Функция `fetch_epic_image_info(url)` делает запрос к API и возвращает информацию об изображениях. 
+<br>- Скачивание изображений EPIC: Функция `download_epic_images(count, api_key)` скачивает заданное количество изображений.
 
 # Пример функции для получения информации об изображениях EPIC
 ```python
@@ -93,14 +92,20 @@ except requests.exceptions.RequestException as error:
     print(f"Ошибка при запросе к SpaceX API: {error}")
     return None
 ```
-<br>### 4. `telegram.py`<br><br>Этот файл содержит функции для публикации изображений в Telegram. Он включает в себя:<br><br>- **Публикация изображений в Telegram**: Функция `publish_images_to_telegram(directory, bot_token, chat_id)` отправляет изображения из указанной директории в Telegram.<br><br>
-```python<br># Пример функции для публикации изображений в Telegram
+
+### 4. `telegram.py`
+Этот файл содержит функции для публикации изображений в Telegram. Он включает в себя:
+<br>Публикация изображений в Telegram**: Функция `publish_images_to_telegram(directory, bot_token, chat_id)` отправляет изображения из указанной директории в Telegram.
+
+# Пример функции для публикации изображений в Telegram
+```python
 def publish_images_to_telegram(directory, bot_token, chat_id):
     bot = Bot(token=bot_token)
     if not os.listdir(directory):
         print(f"Нет изображений для публикации в {directory}.")
         return
 ```
+
 ### 5. main.py
 
 Это основной файл, который запускает весь процесс. Он использует функции из других файлов для скачивания изображений и их публикации в Telegram.
