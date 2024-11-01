@@ -2,14 +2,13 @@ import os
 import requests
 from urllib.parse import urlencode
 import time
+from dotenv import load_dotenv
 
 APOD_IMAGES_DIRECTORY = "./apod_images"
-
 
 def build_apod_url(api_key):
     params = {'api_key': api_key}
     return 'https://api.nasa.gov/planetary/apod?' + urlencode(params)
-
 
 def fetch_apod_image_info(url):
     response = requests.get(url)
@@ -32,10 +31,14 @@ def save_image(image_url, directory, prefix):
     except requests.exceptions.RequestException as error:
         print(f"Ошибка при загрузке изображения: {error}")
         return None
+    except ValueError as error:
+        print(f"Ошибка в значении: {error}")
+        return None
 
 def download_apod_images(count=1, api_key=None):
     if not os.path.exists(APOD_IMAGES_DIRECTORY):
         os.makedirs(APOD_IMAGES_DIRECTORY)
+
     for _ in range(count):
         url = build_apod_url(api_key)
         apod_image_info = fetch_apod_image_info(url)
@@ -47,4 +50,15 @@ def download_apod_images(count=1, api_key=None):
                 print(f"Скачано изображение APOD: {file_path}")
         else:
             print("Нет данных для APOD.")
+
+if __name__ == "__main__":
+    load_dotenv()
+    API_KEY = os.getenv('NASA_API_KEY')
+    download_apod_images(count=3, api_key=API_KEY)
+
+
+
+
+
+
 

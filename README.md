@@ -35,10 +35,8 @@ TELEGRAM_CHAT_ID=ваш_chat_id
 - `apod.py`: функции для работы с API NASA APOD.
 - `epic.py`: функции для работы с API NASA EPIC.
 - `spacex.py`: функции для работы с API SpaceX.
-- `telegram.py`: функции для публикации изображений в Telegram.
+- `publish.py`: скрипт, который используется  для публикации изображений.
 - `main.py`: основной файл для запуска проекта.
-
-## Описание файлов
 
 ### 1. `apod.py`
 
@@ -49,12 +47,12 @@ TELEGRAM_CHAT_ID=ваш_chat_id
 - **Сохранение изображения**: Функция `save_image(image_url, directory, prefix)` загружает изображение и сохраняет его в указанной директории.
 - **Скачивание изображений APOD**: Функция `download_apod_images(count, api_key)` скачивает заданное количество изображений.
 
-Пример функции для построения URL для APOD
+Пример функции для построения URL для APOD:
+
 ```python
 def build_apod_url(api_key): params = {'api_key': api_key}
 return 'https://api.nasa.gov/planetary/apod?' + urlencode(params)
 ```
-
 
 ### 2. `epic.py`
 Этот файл содержит функции для работы с API NASA EPIC. Он включает в себя:
@@ -93,45 +91,14 @@ except requests.exceptions.RequestException as error:
     return None
 ```
 
-### 4. `telegram.py`
-Этот файл содержит функции для публикации изображений в Telegram. Он включает в себя:
-<br>Публикация изображений в Telegram**: Функция `publish_images_to_telegram(directory, bot_token, chat_id)` отправляет изображения из указанной директории в Telegram.
+### 4. publish.py
 
-#### Пример функции для публикации изображений в Telegram
-```python
-def publish_images_to_telegram(directory, bot_token, chat_id):
-    bot = Bot(token=bot_token)
-    if not os.listdir(directory):
-        print(f"Нет изображений для публикации в {directory}.")
-        return
-```
+Этот файл используеться для публикации изображений, скачанных из других источников.
 
-### 5. main.py
+### 6. main.py
 
 Это основной файл, который запускает весь процесс. Он использует функции из других файлов для скачивания изображений и их публикации в Telegram.
 
-#### Пример основного цикла в main.py  
-```python
-    while True: try: 
-        download_apod_images(count=args.count, api_key=API_KEY) 
-        download_epic_images(count=args.count, api_key=API_KEY) 
-        download_spacex_image()`
-        publish_images_to_telegram(APOD_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
-        publish_images_to_telegram(EPIC_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
-        publish_images_to_telegram(SPACEX_IMAGES_DIRECTORY, BOT_TOKEN, CHAT_ID)
-        print('Изображения успешно опубликованы. Ждем перед следующей итерацией.')
-    except Exception as error:
-        print(f"Ошибка в основном цикле: {error}")
-```
-
-### Запуск проекта
-<br>Чтобы запустить проект, выполните следующую команду в терминале:<br><br>
-```python
-python main.py --count 3 --interval 14400
-```
-
-
-Здесь `--count` указывает количество изображений для загрузки, а `--interval` — интервал публикации в секундах.
 
 ## Заключение
 

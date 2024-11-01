@@ -1,6 +1,7 @@
 import os
 import requests
 from urllib.parse import urlencode
+from dotenv import load_dotenv
 
 EPIC_IMAGES_DIRECTORY = "./epic_images"
 
@@ -12,6 +13,20 @@ def fetch_epic_image_info(url):
     response = requests.get(url)
     response.raise_for_status()
     return response.json()
+
+def save_image(image_url, directory, prefix):
+    try:
+        image_response = requests.get(image_url)
+        image_response.raise_for_status()
+
+        extension = image_url.split('.')[-1]
+        file_path = f"{directory}/{prefix}_{time.time()}.{extension}"
+        with open(file_path, 'wb') as file:
+            file.write(image_response.content)
+        return file_path
+    except requests.exceptions.RequestException as error:
+        print(f"Ошибка при загрузке изображения: {error}")
+        return None
 
 def download_epic_images(count=1, api_key=None):
     if not os.path.exists(EPIC_IMAGES_DIRECTORY):
@@ -26,4 +41,14 @@ def download_epic_images(count=1, api_key=None):
         file_path = save_image(image_url, EPIC_IMAGES_DIRECTORY, f"epic_{date_str}")
         if file_path:
             print(f"Скачано изображение EPIC: {file_path}")
+
+if __name__ == "__main__":
+    load_dotenv()
+    API_KEY = os.getenv('NASA_API_KEY')
+    download_epic_images(count=3, api_key=API_KEY)
+
+
+
+
+
 
