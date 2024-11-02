@@ -23,14 +23,14 @@ def main():
     args = parser.parse_args()
 
     while True:
-        print("Начинаем загрузку изображений...")
+
         download_images(API_KEY, args.count)
         print("Загрузка завершена. Публикуем изображения в Telegram...")
         publish_images_to_telegram('./apod_images', bot_token_key, chat_id_key)
         publish_images_to_telegram('./epic_images', bot_token_key, chat_id_key)
         publish_images_to_telegram('./spacex_images', bot_token_key, chat_id_key)
         print("Публикация завершена. Ждем 4 часа перед следующей загрузкой и публикацией...")
-        time.sleep(14400)  # 4 часа в секундах
+        time.sleep(14400)  
 
 if __name__ == "__main__":
     main()
