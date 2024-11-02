@@ -1,35 +1,24 @@
 import os
 import requests
 from urllib.parse import urlencode
-import time
 from dotenv import load_dotenv
+from download_tools import save_image  
 
 APOD_IMAGES_DIRECTORY = "./apod_images"
 
 def get_apod_images(api_key, count):
     params = {
         'api_key': api_key,
-        'count': count  #
+        'count': count
     }
     url = 'https://api.nasa.gov/planetary/apod?' + urlencode(params)
     response = requests.get(url)
     response.raise_for_status()
     return response.json()
 
-def save_image(image_url, directory, prefix):
-    image_response = requests.get(image_url)
-    image_response.raise_for_status()
-    extension = image_url.split('.')[-1]
-    if extension not in ['jpg', 'jpeg', 'png', 'gif']:
-        raise ValueError("URL не содержит известного расширения")
-    file_path = f"{directory}/{prefix}_{time.time()}.{extension}"
-    with open(file_path, 'wb') as file:
-        file.write(image_response.content)
-    return file_path
-
 def download_apod_images(count=1, api_key=None):
     os.makedirs(APOD_IMAGES_DIRECTORY, exist_ok=True)
-    apod_images = get_apod_images(api_key, count)  
+    apod_images = get_apod_images(api_key, count)
     for apod_image in apod_images:
         if apod_image and 'url' in apod_image:
             image_url = apod_image['url']
@@ -44,6 +33,9 @@ if __name__ == "__main__":
     load_dotenv()
     api_key_nasa = os.getenv('NASA_API_KEY')
     download_apod_images(count=5, api_key=api_key_nasa)
+
+
+
 
 
 
