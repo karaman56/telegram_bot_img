@@ -16,29 +16,18 @@ def fetch_apod_image_info(url):
     return response.json()
 
 def save_image(image_url, directory, prefix):
-    try:
-        image_response = requests.get(image_url)
-        image_response.raise_for_status()
-
-        extension = image_url.split('.')[-1]
-        if extension not in ['jpg', 'jpeg', 'png', 'gif']:
-            raise ValueError("URL не содержит известного расширения")
-
-        file_path = f"{directory}/{prefix}_{time.time()}.{extension}"
-        with open(file_path, 'wb') as file:
-            file.write(image_response.content)
-        return file_path
-    except requests.exceptions.RequestException as error:
-        print(f"Ошибка при загрузке изображения: {error}")
-        return None
-    except ValueError as error:
-        print(f"Ошибка в значении: {error}")
-        return None
+    image_response = requests.get(image_url)
+    image_response.raise_for_status()
+    extension = image_url.split('.')[-1]
+    if extension not in ['jpg', 'jpeg', 'png', 'gif']:
+        raise ValueError("URL не содержит известного расширения")
+    file_path = f"{directory}/{prefix}_{time.time()}.{extension}"
+    with open(file_path, 'wb') as file:
+        file.write(image_response.content)
+    return file_path
 
 def download_apod_images(count=1, api_key=None):
-    if not os.path.exists(APOD_IMAGES_DIRECTORY):
-        os.makedirs(APOD_IMAGES_DIRECTORY)
-
+    os.makedirs(APOD_IMAGES_DIRECTORY, exist_ok=True)
     for _ in range(count):
         url = build_apod_url(api_key)
         apod_image_info = fetch_apod_image_info(url)
@@ -55,6 +44,8 @@ if __name__ == "__main__":
     load_dotenv()
     api_key_nasa = os.getenv('NASA_API_KEY')
     download_apod_images(count=3, api_key=api_key_nasa)
+
+
 
 
 

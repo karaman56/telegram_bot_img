@@ -2,6 +2,7 @@ import os
 import requests
 from urllib.parse import urlencode
 from dotenv import load_dotenv
+import time  # Не забудьте импортировать time, так как он используется в save_image
 
 EPIC_IMAGES_DIRECTORY = "./epic_images"
 
@@ -15,23 +16,17 @@ def fetch_epic_image_info(url):
     return response.json()
 
 def save_image(image_url, directory, prefix):
-    try:
-        image_response = requests.get(image_url)
-        image_response.raise_for_status()
+    image_response = requests.get(image_url)
+    image_response.raise_for_status()
+    extension = image_url.split('.')[-1]
+    file_path = f"{directory}/{prefix}_{time.time()}.{extension}"
+    with open(file_path, 'wb') as file:
+        file.write(image_response.content)
+    return file_path
 
-        extension = image_url.split('.')[-1]
-        file_path = f"{directory}/{prefix}_{time.time()}.{extension}"
-        with open(file_path, 'wb') as file:
-            file.write(image_response.content)
-        return file_path
-    except requests.exceptions.RequestException as error:
-        print(f"Ошибка при загрузке изображения: {error}")
-        return None
 
 def download_epic_images(count=1, api_key=None):
-    if not os.path.exists(EPIC_IMAGES_DIRECTORY):
-        os.makedirs(EPIC_IMAGES_DIRECTORY)
-
+    os.makedirs(EPIC_IMAGES_DIRECTORY, exist_ok=True)
     url = build_epic_url(api_key)
     epic_image_info_list = fetch_epic_image_info(url)[:count]
     for item in epic_image_info_list:
@@ -46,6 +41,8 @@ if __name__ == "__main__":
     load_dotenv()
     api_key_nasa = os.getenv('NASA_API_KEY')
     download_epic_images(count=3, api_key=api_key_nasa)
+
+
 
 
 
