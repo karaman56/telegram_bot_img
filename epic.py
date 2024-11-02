@@ -6,11 +6,10 @@ import time  # Не забудьте импортировать time, так к�
 
 EPIC_IMAGES_DIRECTORY = "./epic_images"
 
-def build_epic_url(api_key):
-    params = {'api_key': api_key}
-    return 'https://api.nasa.gov/EPIC/api/natural/all?' + urlencode(params)
-
+    
 def fetch_epic_image_info(url):
+    params = {'api_key': api_key}
+    url = 'https://api.nasa.gov/EPIC/api/natural/all?' + urlencode(params)
     response = requests.get(url)
     response.raise_for_status()
     return response.json()
