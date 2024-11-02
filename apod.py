@@ -6,8 +6,11 @@ from dotenv import load_dotenv
 
 APOD_IMAGES_DIRECTORY = "./apod_images"
 
-def get_apod_image(api_key):
-    params = {'api_key': api_key}
+def get_apod_images(api_key, count):
+    params = {
+        'api_key': api_key,
+        'count': count  #
+    }
     url = 'https://api.nasa.gov/planetary/apod?' + urlencode(params)
     response = requests.get(url)
     response.raise_for_status()
@@ -26,10 +29,10 @@ def save_image(image_url, directory, prefix):
 
 def download_apod_images(count=1, api_key=None):
     os.makedirs(APOD_IMAGES_DIRECTORY, exist_ok=True)
-    for _ in range(count):
-        apod_image_save = get_apod_image(api_key)
-        if apod_image_save and 'url' in apod_image_data:
-            image_url = apod_image_save['url']
+    apod_images = get_apod_images(api_key, count)  
+    for apod_image in apod_images:
+        if apod_image and 'url' in apod_image:
+            image_url = apod_image['url']
             print(f"APOD Image URL: {image_url}")
             file_path = save_image(image_url, APOD_IMAGES_DIRECTORY, "apod")
             if file_path:
@@ -40,7 +43,10 @@ def download_apod_images(count=1, api_key=None):
 if __name__ == "__main__":
     load_dotenv()
     api_key_nasa = os.getenv('NASA_API_KEY')
-    download_apod_images(count=3, api_key=api_key_nasa)
+    download_apod_images(count=5, api_key=api_key_nasa)
+
+
+
 
 
 
