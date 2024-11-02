@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 APOD_IMAGES_DIRECTORY = "./apod_images"
 
 
-def fetch_apod_image_info(api_key):
+def get_apod_image(api_key):
     params = {'api_key': api_key}
     url = 'https://api.nasa.gov/planetary/apod?' + urlencode(params)
     response = requests.get(url)
@@ -30,9 +30,9 @@ def save_image(image_url, directory, prefix):
 def download_apod_images(count=1, api_key=None):
     os.makedirs(APOD_IMAGES_DIRECTORY, exist_ok=True)
     for _ in range(count):
-        apod_image_info = fetch_apod_image_info(api_key)
-        if apod_image_info and 'url' in apod_image_info:
-            image_url = apod_image_info['url']
+        apod_image_save = get_apod_image(api_key)
+        if apod_image_save and 'url' in apod_image_save:
+            image_url = apod_image_save['url']
             print(f"APOD Image URL: {image_url}")
             file_path = save_image(image_url, APOD_IMAGES_DIRECTORY, "apod")
             if file_path:

@@ -6,8 +6,8 @@ import time  # Не забудьте импортировать time, так к�
 
 EPIC_IMAGES_DIRECTORY = "./epic_images"
 
-    
-def fetch_epic_image_info(url):
+
+def get_epic_image(url):
     params = {'api_key': api_key}
     url = 'https://api.nasa.gov/EPIC/api/natural/all?' + urlencode(params)
     response = requests.get(url)
@@ -27,8 +27,8 @@ def save_image(image_url, directory, prefix):
 def download_epic_images(count=1, api_key=None):
     os.makedirs(EPIC_IMAGES_DIRECTORY, exist_ok=True)
     url = build_epic_url(api_key)
-    epic_image_info_list = fetch_epic_image_info(url)[:count]
-    for item in epic_image_info_list:
+    epic_image_info_save = get_epic_image(url)[:count]
+    for item in epic_image_info_save:
         date_str = item['date'].split(' ')[0].replace('-', '/')
         image_url = f"https://epic.gsfc.nasa.gov/archive/natural/{date_str}/png/{item['image']}.png"
         print(f"EPIC Image URL: {image_url}")
