@@ -12,12 +12,12 @@ def publish_images_to_telegram(image_folder, bot_token, chat_id):
 
 if __name__ == "__main__":
     load_dotenv()
-    BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-    CHAT_ID = os.getenv('TELEGRAM_CHANNEL_ID')
+    bot_token_key = os.getenv('TELEGRAM_BOT_TOKEN')
+    chat_id_key = os.getenv('TELEGRAM_CHANNEL_ID')
 
-    publish_images_to_telegram('./apod_images', BOT_TOKEN, CHAT_ID)
-    publish_images_to_telegram('./epic_images', BOT_TOKEN, CHAT_ID)
-    publish_images_to_telegram('./spacex_images', BOT_TOKEN, CHAT_ID)
+    publish_images_to_telegram('./apod_images', bot_token_key, chat_id_key)
+    publish_images_to_telegram('./epic_images', bot_token_key, chat_id_key)
+    publish_images_to_telegram('./spacex_images', bot_token_key, chat_id_key)
 
 
 

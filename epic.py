@@ -44,8 +44,8 @@ def download_epic_images(count=1, api_key=None):
 
 if __name__ == "__main__":
     load_dotenv()
-    API_KEY = os.getenv('NASA_API_KEY')
-    download_epic_images(count=3, api_key=API_KEY)
+    api_key_nasa = os.getenv('NASA_API_KEY')
+    download_epic_images(count=3, api_key=api_key_nasa)
 
 
 

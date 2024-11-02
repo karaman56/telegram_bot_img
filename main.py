@@ -14,9 +14,9 @@ def download_images(api_key, count):
 
 def main():
     load_dotenv()
-    API_KEY = os.getenv('NASA_API_KEY')
-    BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-    CHAT_ID = os.getenv('TELEGRAM_CHANNEL_ID')
+    api_key_nasa= os.getenv('NASA_API_KEY')
+    bot_token_key = os.getenv('TELEGRAM_BOT_TOKEN')
+    chat_id_key = os.getenv('TELEGRAM_CHANNEL_ID')
 
     parser = argparse.ArgumentParser(description='Загрузка и публикация изображений в Telegram.')
     parser.add_argument('--count', type=int, default=3, help='Количество изображений для загрузки (по умолчанию 3).')
@@ -26,9 +26,9 @@ def main():
         print("Начинаем загрузку изображений...")
         download_images(API_KEY, args.count)
         print("Загрузка завершена. Публикуем изображения в Telegram...")
-        publish_images_to_telegram('./apod_images', BOT_TOKEN, CHAT_ID)
-        publish_images_to_telegram('./epic_images', BOT_TOKEN, CHAT_ID)
-        publish_images_to_telegram('./spacex_images', BOT_TOKEN, CHAT_ID)
+        publish_images_to_telegram('./apod_images', bot_token_key, chat_id_key)
+        publish_images_to_telegram('./epic_images', bot_token_key, chat_id_key)
+        publish_images_to_telegram('./spacex_images', bot_token_key, chat_id_key)
         print("Публикация завершена. Ждем 4 часа перед следующей загрузкой и публикацией...")
         time.sleep(14400)  # 4 часа в секундах
 
