@@ -39,14 +39,14 @@ def download_images(image_urls):
 
 def download_epic_images(count=1, api_key=None):
     """Скачивает изображения EPIC и возвращает их содержимое в виде списка байтов."""
-    epic_images = get_epic_images(api_key)[:count]  # Получаем только нужное количество изображений
-    image_urls = [construct_image_url(image) for image in epic_images]  # Формируем URL для изображений
+    epic_images = get_epic_images(api_key)[:count]
+    image_urls = [construct_image_url(image) for image in epic_images]
     return download_images(image_urls)
 
 if __name__ == "__main__":
     load_dotenv()
     api_key_nasa = os.getenv('NASA_API_KEY')
-    download_epic_images(count=1, api_key=api_key_nasa)  
+    download_epic_images(count=1, api_key=api_key_nasa)
 
 
 
