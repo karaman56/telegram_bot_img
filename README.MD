@@ -30,8 +30,7 @@
 Перед запуском программы выполните следующие шаги:
 
 1. **Клонируйте репозиторий**:
-```bash
-git clone [https://github.com/ваш_пользователь/nasa-image-downloader.git](https://github.com/karaman56/telegram_bot_img)](https://github.com/karaman56/telegram_bot_img)
+```bash(https://github.com/karaman56/telegram_bot_img)
 ```
 
 2. **Перейдите в директорию проекта**:
