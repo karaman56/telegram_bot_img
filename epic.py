@@ -34,13 +34,15 @@ def download_images(image_urls):
 
 def download_epic_images(count=1, api_key=None):
     """Скачивает изображения EPIC и возвращает их содержимое в виде списка байтов."""
-    epic_images = get_epic_images(api_key)[:count]
-    image_urls = [construct_image_url(image) for image in epic_images]
-    return download_images(image_urls)
+    pass
+
+def main():
+    api_key_epic = os.getenv('EPIC_API_KEY')
+    images = download_epic_images(count=1, api_key=api_key_epic)
+    print(images)
 
 if __name__ == "__main__":
-    api_key_nasa = os.getenv('NASA_API_KEY')
-    images = download_epic_images(count=1, api_key=api_key_nasa)
+    main()
 
 
 
