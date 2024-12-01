@@ -1,15 +1,36 @@
 
 import os
-import telegram
-from io import BytesIO
+import time
+import random
+import argparse
 from dotenv import load_dotenv
+from publish import publish_images_to_telegram
+from load_images import load_images
 
-def publish_images_to_telegram(image_bytes, bot_token, chat_id):
-    """Публикует изображение в Telegram."""
-    bot = telegram.Bot(token=bot_token)
-    image_file = BytesIO(image_bytes)
-    image_file.name = 'image.png'
-    bot.send_photo(chat_id=chat_id, photo=image_file)
+def main():
+    load_dotenv()
+
+    parser = argparse.ArgumentParser(description='Публикация изображений в Telegram.')
+    parser.add_argument('--interval', type=int, default=14400,
+                        help='Интервал между публикациями в секундах (по умолчанию 4 часа).')
+    args = parser.parse_args()
+
+    bot_token_key = os.getenv('TELEGRAM_BOT_TOKEN')
+    chat_id_key = os.getenv('TELEGRAM_CHANNEL_ID')
+
+    while True:
+        image_bytes = load_images()
+        random.shuffle(image_bytes)
+
+        for image in image_bytes:
+            publish_images_to_telegram(image, bot_token_key, chat_id_key)
+            print("Изображение опубликовано. Ждем {} секунд перед следующей публикацией...".format(args.interval))
+            time.sleep(args.interval)
+            break  
+
+if __name__ == "__main__":
+    main()
+
 
 
 

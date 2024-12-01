@@ -1,18 +1,13 @@
 import os
 import requests
-from urllib.parse import urlencode
 from dotenv import load_dotenv
 from download_tools import save_image
 
-
-
 def get_epic_images(api_key):
     """Получает информацию о изображениях EPIC из NASA API."""
+    url = 'https://api.nasa.gov/EPIC/api/natural/all'
     params = {'api_key': api_key}
-    query_string = urlencode(params)
-    url = f'https://api.nasa.gov/EPIC/api/natural/all?{query_string}'
-
-    response = requests.get(url)
+    response = requests.get(url, params=params)
     response.raise_for_status()
     return response.json()
 
@@ -29,17 +24,21 @@ def download_images(image_urls):
     """Скачивает изображения по списку URL и возвращает их содержимое в виде списка байтов."""
     images = []
     for url in image_urls:
-        images.append(save_image(url))
+    images.append(save_image(url))
     return images
 
-def download_epic_images(count=1, api_key=None):
+ddef download_epic_images(count=1, api_key=None):
     """Скачивает изображения EPIC и возвращает их содержимое в виде списка байтов."""
-    pass
+    epic_images = get_epic_images(api_key)
+    image_urls = [construct_image_url(image) for image in epic_images[:count]]  # Берем первые `count` изображений
+    return download_images(image_urls)
+
 
 def main():
+    load_dotenv()
     api_key_epic = os.getenv('EPIC_API_KEY')
     images = download_epic_images(count=1, api_key=api_key_epic)
-    print(images)
+
 
 if __name__ == "__main__":
     main()

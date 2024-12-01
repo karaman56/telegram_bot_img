@@ -7,17 +7,20 @@ from spacex import download_spacex_image
 
 IMAGES_DIRECTORY = "./images"
 
+
 def load_images():
     """Загружает изображения из локальной директории."""
     image_files = []
-    if not os.path.exists(IMAGES_DIRECTORY):
-        os.makedirs(IMAGES_DIRECTORY)
+
+    # Создаем каталог, если его еще нет
+    os.makedirs(IMAGES_DIRECTORY, exist_ok=True)
 
     for filename in os.listdir(IMAGES_DIRECTORY):
         if filename.endswith('.png') or filename.endswith('.jpg'):
             with open(os.path.join(IMAGES_DIRECTORY, filename), 'rb') as f:
                 image_files.append(f.read())
     return image_files
+
 
 def main():
     load_dotenv()
@@ -33,8 +36,10 @@ def main():
     download_epic_images(count=args.count, api_key=nasa_api_key)
     download_spacex_image()
 
+
 if __name__ == "__main__":
     main()
+
 
 
 
