@@ -26,7 +26,7 @@ def main():
             publish_images_to_telegram(image, bot_token_key, chat_id_key)
             print("Изображение опубликовано. Ждем {} секунд перед следующей публикацией...".format(args.interval))
             time.sleep(args.interval)
-            break  
+            break
 
 if __name__ == "__main__":
     main()
