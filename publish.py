@@ -4,7 +4,6 @@ import time
 import random
 import argparse
 from dotenv import load_dotenv
-from publish import publish_images_to_telegram
 from load_images import load_images
 
 
