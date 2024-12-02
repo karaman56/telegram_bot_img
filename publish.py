@@ -7,6 +7,15 @@ from dotenv import load_dotenv
 from publish import publish_images_to_telegram
 from load_images import load_images
 
+
+def publish_images_to_telegram(image_bytes, bot_token_key, chat_id_key):
+    """Отправляет изображение в Telegram канал или чат."""
+    url = f'https://api.telegram.org/bot{bot_token_key}/sendPhoto'
+    files = {'photo': image_bytes}
+    data = {'chat_id': chat_id_key}
+    response = requests.post(url, files=files, data=data)
+    response.raise_for_status()
+
 def main():
     load_dotenv()
 

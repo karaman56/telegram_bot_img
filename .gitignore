@@ -11,3 +11,5 @@ htmlcov/
 *.mo
 *.pot
 .tox
+load_images.py
+
