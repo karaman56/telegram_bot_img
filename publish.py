@@ -1,43 +1,29 @@
-
 import os
-import time
-import random
 import argparse
 from dotenv import load_dotenv
-from load_images import load_images
+from apod import download_apod_images
+from epic import download_epic_images
+from spacex import download_spacex_image
 
-
-def publish_images_to_telegram(image_bytes, bot_token_key, chat_id_key):
-    """Отправляет изображение в Telegram канал или чат."""
-    url = f'https://api.telegram.org/bot{bot_token_key}/sendPhoto'
-    files = {'photo': image_bytes}
-    data = {'chat_id': chat_id_key}
-    response = requests.post(url, files=files, data=data)
-    response.raise_for_status()
+IMAGES_DIRECTORY = "./images"
 
 def main():
     load_dotenv()
 
-    parser = argparse.ArgumentParser(description='Публикация изображений в Telegram.')
-    parser.add_argument('--interval', type=int, default=14400,
-                        help='Интервал между публикациями в секундах (по умолчанию 4 часа).')
+    parser = argparse.ArgumentParser(description='Загрузка изображений.')
+    parser.add_argument('--count', type=int, default=1,
+                        help='Количество изображений для загрузки из каждого источника (по умолчанию 1).')
     args = parser.parse_args()
 
-    bot_token_key = os.getenv('TELEGRAM_BOT_TOKEN')
-    chat_id_key = os.getenv('TELEGRAM_CHANNEL_ID')
-
-    while True:
-        image_bytes = load_images()
-        random.shuffle(image_bytes)
-
-        for image in image_bytes:
-            publish_images_to_telegram(image, bot_token_key, chat_id_key)
-            print("Изображение опубликовано. Ждем {} секунд перед следующей публикацией...".format(args.interval))
-            time.sleep(args.interval)
-            break
+    nasa_api_key = os.getenv('NASA_API_KEY')
+    download_apod_images(count=args.count, api_key=nasa_api_key)
+    download_epic_images(count=args.count, api_key=nasa_api_key)
+    download_spacex_image()  # Предполагается, что эта функция загружает одно изображение
 
 if __name__ == "__main__":
     main()
+
+
 
 
 

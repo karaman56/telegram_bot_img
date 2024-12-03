@@ -3,7 +3,6 @@ import requests
 from dotenv import load_dotenv
 from download_tools import save_image
 
-
 def get_epic_images(api_key):
     """Получает информацию о изображениях EPIC из NASA API."""
     url = 'https://api.nasa.gov/EPIC/api/natural/all'
@@ -27,7 +26,6 @@ def download_images(image_urls):
     for url in image_urls:
         images.append(save_image(url))
 
-
 def main():
     load_dotenv()
     api_key_epic = os.getenv('EPIC_API_KEY')
@@ -38,6 +36,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
