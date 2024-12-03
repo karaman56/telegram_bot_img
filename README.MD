@@ -58,7 +58,7 @@ TELEGRAM_CHANNEL_ID=ваш_id_канала
 Чтобы запустить основной скрипт и загрузить изображения, используйте следующую команду в терминале:
 
 ```bash
-python main.py --count 5
+python main.py
 ```
 
 
@@ -70,12 +70,12 @@ python main.py --count 5
 
 - **Загрузка изображений APOD**:
   ```bash
-  python apod.py --count 5
+  python apod.py 
   ```
 
 - **Загрузка изображений EPIC**:
   ```bash
-  python epic.py --count 3
+  python epic.py 
   ```
 
 - **Загрузка изображения последнего запуска SpaceX**:
