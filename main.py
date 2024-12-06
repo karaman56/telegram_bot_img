@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 IMAGES_DIRECTORY = "./images"
 
-def publish_images_to_telegram(image_path, bot_token_key, chat_id_key):
+def publish_image_to_telegram(image_path, bot_token_key, chat_id_key):
     """Отправляет изображение в Telegram канал или чат."""
     with open(image_path, 'rb') as f:
         files = {'photo': f}
@@ -25,7 +25,7 @@ def main():
     images = [os.path.join(IMAGES_DIRECTORY, img) for img in os.listdir(IMAGES_DIRECTORY) if img.endswith(('.png', '.jpg', '.jpeg'))]
     while True:
         image_path = random.choice(images)
-        publish_images_to_telegram(image_path, bot_token_key, chat_id_key)
+        publish_image_to_telegram(image_path, bot_token_key, chat_id_key)
         print(f"Изображение {image_path} опубликовано. Ждем {args.interval} секунд перед следующей публикацией...")
         time.sleep(args.interval)
 

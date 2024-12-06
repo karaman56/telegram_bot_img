@@ -17,7 +17,7 @@ def main():
     nasa_api_key = os.getenv('NASA_API_KEY')
     download_apod_images(count=args.count, api_key=nasa_api_key)
     download_epic_images(count=args.count, api_key=nasa_api_key)
-    download_spacex_image()  # Предполагается, что эта функция загружает одно изображение
+    download_spacex_image()
 
 if __name__ == "__main__":
     main()
